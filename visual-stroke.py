@@ -28,7 +28,7 @@ def define_form(hands):
     any_vowels = left.vowels or right.vowels
     if left.consonants and not (right.consonants or any_vowels):
         return Form.left_consonants
-    if right.consonants and not (left.consonants or any_vowels):
+    elif right.consonants and not (left.consonants or any_vowels):
         return Form.right_consonants
     left_full = left.consonants and left.vowels
     left_any = left.consonants or left.vowels
@@ -36,22 +36,17 @@ def define_form(hands):
     right_any = right.consonants or right.vowels
     if left_full and not right_any:
         return Form.left_full
-    if right_full and not left_any:
+    elif right_full and not left_any:
         return Form.right_full
     return Form.full
 
-class Hands:
-    def __init__(self, left, right):
-        self.left = left
-        self.right = right
-
 class Hand:
-    def __init__(self, top, middle, base):
+    def __init__(self, top: list[str], middle: list[str], base: list[str]):
         self.top = top
         self.middle = middle
         self.base = base
 
-    def join(self):
+    def join(self) -> Hand:
         rows = self.__dict__
         for name, row in rows.items():
             for i in range(len(row)):
@@ -66,14 +61,19 @@ class Hand:
         return Clusters(consonants, vowels)
 
     @staticmethod
-    def check(row):
+    def check(row) -> bool:
         if ''.join(row) == "":
             return False
         else:
             return True
 
+class Hands:
+    def __init__(self, left: Hand, right: Hand):
+        self.left = left
+        self.right = right
+
 class Clusters():
-    def __init__(self, consonants, vowels):
+    def __init__(self, consonants: bool, vowels: bool):
         self.consonants = consonants
         self.vowels = vowels
 
@@ -119,13 +119,13 @@ def construction(hands, star, form):
         star = '-'
     if form == Form.full:
        return construct_full(left, right, star)
-    if form == Form.left_full:
+    elif form == Form.left_full:
        return construct_left_full(left, star)
-    if form == Form.right_full:
+    elif form == Form.right_full:
        return construct_right_full(right, star)
-    if form == Form.left_consonants:
+    elif form == Form.left_consonants:
        return construct_left_consonants(left)
-    if form == Form.right_consonants:
+    elif form == Form.right_consonants:
        return construct_right_consonants(right)
 
 
